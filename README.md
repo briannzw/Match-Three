@@ -9,12 +9,12 @@
 * [License](#license)
 
 ## General info
-Sebuah repository untuk assignment project "Angry Birds" dari [DILo Game Academy](https://academy.dilo.id) yang dibuat menggunakan Unity Engine.
+Sebuah repository untuk assignment project "Match Three" dari [DILo Game Academy](https://academy.dilo.id) yang dibuat menggunakan Unity Engine.
 Dikembangkan oleh Brian Wijaya.
 
 ## Screenshots
-![alt text](https://github.com/briannzw/github-magnetize/blob/master/Screenshots/Screenshot%201.png "Screenshot 1")
-![alt text](https://github.com/briannzw/github-magnetize/blob/master/Screenshots/Screenshot%202.png "Screenshot 2")
+![alt text](https://github.com/briannzw/Match-Three/blob/master/Screenshots/Screenshot%201.png "Screenshot 1")
+![alt text](https://github.com/briannzw/Match-Three/blob/master/Screenshots/Screenshot%202.png "Screenshot 2")
 	
 ## Technologies
 Project is created with:
@@ -28,4 +28,4 @@ This project is based on course by [DILo Game Academy](https://academy.dilo.id).
 To run this project, download this project in .zip, extract it locally, then add the project from your Unity Hub.
 
 ## License
-[MIT License](https://github.com/briannzw/Angry-Birds/blob/master/LICENSE)
+[MIT License](https://github.com/briannzw/Match-Three/blob/master/LICENSE)
