@@ -11,6 +11,7 @@ TagManager:
   - Lollipop
   - Star
   - Gum
+  - Special
   layers:
   - Default
   - TransparentFX

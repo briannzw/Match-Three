@@ -18,19 +18,6 @@ public class ObjectPooler : MonoBehaviour
 
     public static ObjectPooler instance;
 
-    public string key;
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            for(int i = 0; i <= poolDictionary[key].Count; i++)
-            {
-                Debug.Log(poolDictionary[key].Peek().name);
-            }
-        }
-    }
-
     private void Awake()
     {
         if (instance == null)

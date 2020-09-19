@@ -175,16 +175,43 @@ public class Tile : MonoBehaviour
         }
     }
 
-    private void CheckMatches()
+    public virtual void CheckMatches()
     {
-        if(column > 0 && column < grid.gridSizeX - 1)
+        if (column > 0 && column < grid.gridSizeX - 1)
         {
             GameObject leftTile = grid.tiles[column - 1, row];
             GameObject rightTile = grid.tiles[column + 1, row];
-            if(leftTile != null && rightTile != null && (leftTile != gameObject && rightTile != gameObject))
+
+            if (leftTile != null && rightTile != null && (leftTile != gameObject && rightTile != gameObject))
             {
-                if(leftTile.CompareTag(gameObject.tag) && rightTile.CompareTag(gameObject.tag))
+                bool leftSpecial = leftTile.CompareTag("Special");
+                bool rightSpecial = rightTile.CompareTag("Special");
+
+                if ((leftTile.CompareTag(gameObject.tag) || leftSpecial) && (rightTile.CompareTag(gameObject.tag) || rightSpecial))
                 {
+                    //Special
+                    if (leftSpecial || rightSpecial || CompareTag("Special"))
+                    {
+                        string _tag;
+
+                        if (!leftSpecial)
+                            _tag = leftTile.tag;
+                        else if (!rightSpecial)
+                            _tag = rightTile.tag;
+                        else
+                            _tag = tag;
+
+                        grid.DestroyTags(_tag);
+                    }
+
+                    isMatched = true;
+                    rightTile.GetComponent<Tile>().isMatched = true;
+                    leftTile.GetComponent<Tile>().isMatched = true;
+                }
+                else if(CompareTag("Special") && leftTile.tag == rightTile.tag)
+                {
+                    grid.DestroyTags(leftTile.tag);
+
                     isMatched = true;
                     rightTile.GetComponent<Tile>().isMatched = true;
                     leftTile.GetComponent<Tile>().isMatched = true;
@@ -196,10 +223,36 @@ public class Tile : MonoBehaviour
         {
             GameObject upTile = grid.tiles[column, row + 1];
             GameObject downTile = grid.tiles[column, row - 1];
+
             if (upTile != null && downTile != null && (upTile != gameObject && downTile != gameObject))
             {
-                if (upTile.CompareTag(gameObject.tag) && downTile.CompareTag(gameObject.tag))
+                bool upSpecial = upTile.CompareTag("Special");
+                bool downSpecial = downTile.CompareTag("Special");
+
+                if ((upTile.CompareTag(gameObject.tag) || upSpecial) && (downTile.CompareTag(gameObject.tag) || downSpecial))
                 {
+                    if(upSpecial || downSpecial || CompareTag("Special"))
+                    {
+                        string _tag;
+
+                        if (!upSpecial)
+                            _tag = upTile.tag;
+                        else if (!downSpecial)
+                            _tag = downTile.tag;
+                        else
+                            _tag = tag;
+
+                        grid.DestroyTags(_tag);
+                    }
+
+                    isMatched = true;
+                    upTile.GetComponent<Tile>().isMatched = true;
+                    downTile.GetComponent<Tile>().isMatched = true;
+                }
+                else if (CompareTag("Special") && upTile.tag == downTile.tag)
+                {
+                    grid.DestroyTags(upTile.tag);
+
                     isMatched = true;
                     upTile.GetComponent<Tile>().isMatched = true;
                     downTile.GetComponent<Tile>().isMatched = true;
@@ -220,6 +273,7 @@ public class Tile : MonoBehaviour
                 otherTile.GetComponent<Tile>().column = column;
                 row = previousRow;
                 column = previousColumn;
+                GameManager.instance.ResetCombo();
             }
             else
             {

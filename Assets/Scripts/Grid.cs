@@ -12,6 +12,8 @@ public class Grid : MonoBehaviour
     public GameObject[,] tiles;
     public GameObject[] candies;
 
+    public int specialChance = 10;
+
     private void Start()
     {
         CreateGrid();
@@ -37,10 +39,27 @@ public class Grid : MonoBehaviour
 
                 int index = Random.Range(0, candies.Length);
 
+                if(index == candies.Length - 1)
+                {
+                    if(!(Random.Range(1, 100) <= specialChance))
+                    {
+                        index = Random.Range(0, candies.Length - 1);
+                    }
+                }
+
                 int MAX_ITERATION = 0;
                 while(MatchesAt(x, y, candies[index]) && MAX_ITERATION < 100)
                 {
                     index = Random.Range(0, candies.Length);
+
+                    if (index == candies.Length - 1)
+                    {
+                        if (!(Random.Range(1, 100) <= specialChance))
+                        {
+                            index = Random.Range(0, candies.Length - 1);
+                        }
+                    }
+
                     MAX_ITERATION++;
                 }
 
@@ -57,11 +76,11 @@ public class Grid : MonoBehaviour
         //Cek jika ada tile yg sama di bwh dan samping
         if (column > 1 && row > 1)
         {
-            if(tiles[column - 1, row].tag == piece.tag && tiles[column - 2, row].tag == piece.tag)
+            if((tiles[column - 1, row].tag == piece.tag || tiles[column - 1, row].tag == "Special") && (tiles[column - 2, row].tag == piece.tag || tiles[column - 2, row].tag == "Special"))
             {
                 return true;
             }
-            if(tiles[column, row - 1].tag == piece.tag && tiles[column, row - 2].tag == piece.tag)
+            if((tiles[column, row - 1].tag == piece.tag || tiles[column, row - 1].tag == "Special") && (tiles[column, row - 2].tag == piece.tag || tiles[column, row - 2].tag == "Special"))
             {
                 return true;
             }
@@ -71,14 +90,14 @@ public class Grid : MonoBehaviour
             //Cek jika ada tile yg sama di atas dan samping
             if(row > 1)
             {
-                if (tiles[column, row - 1].tag == piece.tag && tiles[column, row - 2].tag == piece.tag)
+                if ((tiles[column, row - 1].tag == piece.tag || tiles[column, row - 1].tag == "Special") && (tiles[column, row - 2].tag == piece.tag || tiles[column, row - 2].tag == "Special"))
                 {
                     return true;
                 }
             }
             if(column > 1)
             {
-                if(tiles[column - 1, row].tag == piece.tag && tiles[column - 2, row].tag == piece.tag)
+                if((tiles[column - 1, row].tag == piece.tag || tiles[column - 1, row].tag == "Special") && (tiles[column - 2, row].tag == piece.tag || tiles[column - 2, row].tag == "Special"))
                 {
                     return true;
                 }
@@ -100,6 +119,7 @@ public class Grid : MonoBehaviour
     public void DestroyMatches()
     {
         StopAllCoroutines();
+        GameManager.instance.GetCombo();
 
         for (int i = 0; i < gridSizeX; i++)
         {
@@ -115,6 +135,23 @@ public class Grid : MonoBehaviour
         StartCoroutine(DecreaseRow());
     }
 
+    public void DestroyTags(string _tag)
+    {
+        foreach(var obj in GameObject.FindGameObjectsWithTag(_tag))
+        {
+            obj.GetComponent<Tile>().isMatched = true;
+        }
+
+        StartCoroutine(DestroyAfter(1));
+    }
+
+    private IEnumerator DestroyAfter(int time)
+    {
+        yield return new WaitForSeconds(time);
+
+        DestroyMatches();
+    }
+
     private void RefillBoard()
     {
         for(int x = 0; x < gridSizeX; x++)
@@ -125,6 +162,14 @@ public class Grid : MonoBehaviour
                 {
                     Vector2 tempPosition = new Vector2(startPos.x + (x * offset.x), startPos.y + (y * offset.y));
                     int candyToUse = Random.Range(0, candies.Length);
+
+                    if (candyToUse == candies.Length - 1)
+                    {
+                        if (!(Random.Range(1, 100) <= specialChance))
+                        {
+                            candyToUse = Random.Range(0, candies.Length - 1);
+                        }
+                    }
 
                     GameObject tileToRefill = ObjectPooler.instance.SpawnFromPool(candyToUse.ToString(), tempPosition, Quaternion.identity); //buat objek baru
 

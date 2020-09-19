@@ -60,8 +60,8 @@ public class AchievementSystemWithEvents : MonoBehaviour
 
         if(poi.PoiName.Equals("Lolipop event"))
         {
-            gumEvent.OnMatch();
-            if (gumEvent.AchievementCompleted())
+            lolipopEvent.OnMatch();
+            if (lolipopEvent.AchievementCompleted())
             {
                 key = "Match 7 lolipops";
                 NotifyAchievement(key, poi.PoiName);
@@ -75,14 +75,18 @@ public class AchievementSystemWithEvents : MonoBehaviour
             return;
 
         PlayerPrefs.SetInt(value, 1);
-        achievementText.text = key + " Unlocked!";
 
-        StartCoroutine(ShowAchievementBanner());
+        if(achievementText != null)
+            achievementText.text = key + " Unlocked!";
+
+        if(this != null)
+            StartCoroutine(ShowAchievementBanner());
     }
 
     private void ActivateAchievementBanner(bool active)
     {
-        achievementBanner.gameObject.SetActive(active);
+        if(achievementBanner != null)
+            achievementBanner.gameObject.SetActive(active);
     }
 
     private IEnumerator ShowAchievementBanner()

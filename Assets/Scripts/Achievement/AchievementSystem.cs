@@ -77,14 +77,18 @@ public class AchievementSystem : Observer
             return;
 
         PlayerPrefs.SetInt(value, 1);
-        achievementText.text = key + " Unlocked!";
 
-        StartCoroutine(ShowAchievementBanner());
+        if(achievementText != null)
+            achievementText.text = key + " Unlocked!";
+
+        if(instance != null)
+            StartCoroutine(ShowAchievementBanner());
     }
 
     private void ActivateAchievementBanner(bool active)
     {
-        achievementBanner.gameObject.SetActive(active);
+        if(achievementBanner != null)
+            achievementBanner.gameObject.SetActive(active);
     }
 
     private IEnumerator ShowAchievementBanner()
