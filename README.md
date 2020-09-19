@@ -15,6 +15,7 @@ Dikembangkan oleh Brian Wijaya.
 ## Screenshots
 ![alt text](https://github.com/briannzw/Match-Three/blob/master/Screenshots/Screenshot%201.png "Screenshot 1")
 ![alt text](https://github.com/briannzw/Match-Three/blob/master/Screenshots/Screenshot%202.png "Screenshot 2")
+Special Tile diwakilkan oleh "Special Star" berwarna merah yang mengeliminasi semua tile yang match.
 	
 ## Technologies
 Project is created with:
